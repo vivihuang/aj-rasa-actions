@@ -120,3 +120,7 @@ travis_gcloud_auth.json
 *.db
 *.db-shm
 *.db-wal
+
+# IDE configs
+.idea
+*.iml
