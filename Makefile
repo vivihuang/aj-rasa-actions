@@ -1,6 +1,6 @@
 help:
-	@echo "    run-actions"
+	@echo "    run"
 	@echo "        Run the rasa actions."
 
-run-actions:
+run:
 	rasa run actions --actions actions

@@ -16,7 +16,7 @@ use `source venv/bin/activate` to enable venv
 `pip install -r requirements.txt`
 
 ### Run actions
-`make run-actions`
+`make run`
 
 ## Steps to Setup Rasa actions with Docker
 
