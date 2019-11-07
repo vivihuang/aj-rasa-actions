@@ -25,4 +25,4 @@ EXPOSE 5055
 RUN ["chmod", "+x", "./entrypoint.sh"]
 ENTRYPOINT ["./entrypoint.sh"]
 
-CMD ["start", "--actions", "actions.actions"]
+CMD ["start", "--actions", "actions"]
