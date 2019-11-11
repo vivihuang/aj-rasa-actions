@@ -24,7 +24,7 @@ use `source venv/bin/activate` to enable venv
 `docker build . -t aj-lithuania`
 
 ### Run with docker
-`docker run -d --name rasa-action-server -p 5055:5055 aj-lithuania`
+`docker run -d --name rasa-action-server -p 5055:5055 aj/lithuania`
 
 ## Test rasa actions connection
 
