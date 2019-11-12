@@ -1,5 +1,5 @@
-from random import random
 from rasa_sdk import Action
+import requests as r
 
 
 class ActionChitchat(Action):
@@ -28,14 +28,20 @@ class ActionSearchCourse(Action):
         return "action_search_course"
 
     def run(self, dispatcher, tracker, domain):
-        if random() > 0.5:
-            dispatcher.utter_template("utter_course_list", tracker)
-        else:
-            sports_category = next(tracker.get_latest_entity_values("sports_category"), None)
-            cooking_category = next(tracker.get_latest_entity_values("cooking_category"), None)
-            category_entity = sports_category or cooking_category
-            if category_entity:
-                dispatcher.utter_template("utter_no_course_name", tracker, course_name=category_entity)
+        sports_category = next(tracker.get_latest_entity_values("sports_category"), None)
+        cooking_category = next(tracker.get_latest_entity_values("cooking_category"), None)
+        category_entity = sports_category or cooking_category
+        if category_entity:
+            course_api = "http://localhost:8088/api/course"
+            response = r.get(course_api, params={"subcategory": category_entity})
+            if response.status_code == 200:
+                res = response.json()
+                if res:
+                    dispatcher.utter_template("utter_course_list", tracker, course_name=category_entity)
+                else:
+                    dispatcher.utter_template("utter_no_course_name", tracker, course_name=category_entity)
             else:
-                dispatcher.utter_template("utter_no_course", tracker)
+                dispatcher.utter_template("utter_server_wrong", tracker)
+        else:
+            dispatcher.utter_template("utter_no_course", tracker)
         return []
