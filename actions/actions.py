@@ -1,3 +1,4 @@
+from os import getenv
 from rasa_sdk import Action
 import requests as r
 
@@ -32,7 +33,8 @@ class ActionSearchCourse(Action):
         cooking_category = next(tracker.get_latest_entity_values("cooking_category"), None)
         category_entity = sports_category or cooking_category
         if category_entity:
-            course_api = "http://localhost:8088/api/course"
+            backend_host = getenv("BACKEND_API", "localhost")
+            course_api = "http://" + backend_host + ":8080/api/course"
             response = r.get(course_api, params={"subcategory": category_entity})
             if response.status_code == 200:
                 res = response.json()
