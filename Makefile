@@ -3,4 +3,4 @@ help:
 	@echo "        Run the rasa actions."
 
 run:
-	rasa run actions --actions actions
+	python -m rasa_sdk --actions actions
