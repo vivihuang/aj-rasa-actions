@@ -39,7 +39,12 @@ class ActionSearchCourse(Action):
             if response.status_code == 200:
                 res = response.json()
                 if res:
-                    dispatcher.utter_template("utter_course_list", tracker, course_name=category_entity)
+                    link = res[0]["hyperlinks"]
+                    if link:
+                        dispatcher.utter_template("utter_course_list_with_link", tracker, course_name=category_entity,
+                                                  link=link)
+                    else:
+                        dispatcher.utter_template("utter_course_list", tracker, course_name=category_entity)
                 else:
                     dispatcher.utter_template("utter_no_course_name", tracker, course_name=category_entity)
             else:
