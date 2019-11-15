@@ -1,6 +1,10 @@
 from os import getenv
-from rasa_sdk import Action
+from typing import Text, Dict, Any, List
+
+from rasa_sdk import Action, Tracker
 import requests as r
+from rasa_sdk.events import UserUtteranceReverted
+from rasa_sdk.executor import CollectingDispatcher
 
 
 class ActionChitchat(Action):
@@ -52,3 +56,34 @@ class ActionSearchCourse(Action):
         else:
             dispatcher.utter_template("utter_no_course", tracker)
         return []
+
+
+class ActionDefaultAskAffirmation(Action):
+    """Asks for an affirmation of the intent if NLU threshold is not met."""
+
+    def name(self) -> Text:
+        return "action_default_ask_affirmation"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List["Event"]:
+        dispatcher.utter_template("utter_out_of_scope", tracker)
+        dispatcher.utter_template("utter_possibilities", tracker)
+        return []
+
+
+class ActionDefaultFallback(Action):
+    def name(self) -> Text:
+        return "action_default_fallback"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List["Event"]:
+        dispatcher.utter_template("utter_default", tracker)
+        return [UserUtteranceReverted()]
